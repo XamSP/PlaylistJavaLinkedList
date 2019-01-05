@@ -1,12 +1,42 @@
 package Player;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
 public class Playlist {
 
     private String title;
 
-    private ArrayList<Song> songs = new ArrayList<>();
+    //private ArrayList<Song> songs = new ArrayList<>();
+
+    private LinkedList<Song> songs = new LinkedList<Song>();
+
+    private boolean addInAlphabeticalOrder(Song newSong) {
+        ListIterator<Song> songListIterator = songs.listIterator();
+        String newSongTitle = newSong.getTitle();
+
+        while(songListIterator.hasNext()) {
+            int comparison = songListIterator.next().getTitle().compareTo(newSongTitle);
+            if(comparison == 0) {
+                // equal, do not add since it's already there
+                System.out.println(newSongTitle + " is already included in the playlist");
+                return false;
+            } else if(comparison > 0) {
+                // newSong should appear before this one
+                songListIterator.previous();
+                songListIterator.add(newSong);
+                return true;
+            } else if(comparison < 0) {
+                // move to next song
+            }
+        }
+
+        songListIterator.add(newSong);
+        return true;
+
+    }
 
     public Playlist(String title) {
         this.title = title;
@@ -20,12 +50,12 @@ public class Playlist {
         this.title = title;
     }
 
-    public ArrayList<Song> getSongs() {
+    public LinkedList<Song> getSongs() {
         return songs;
     }
 
     public void addASong(Song song) {
-        songs.add(song);
+        addInAlphabeticalOrder(song);
         System.out.println(song.getTitle() + " was added to the " + this.getTitle() + " playlist!");
     }
 
@@ -41,9 +71,21 @@ public class Playlist {
                 //findSong prints output
             } else {
                 Song foundSong = currentAlbum.getSongs().get(indexOfSongFromAlbum);
-                this.songs.add(foundSong);
+                this.addInAlphabeticalOrder(foundSong);
             }
         }
+    }
+
+    public void addASong(Album album, String songTitle) {
+
+        int indexOfSongFromAlbum = album.findSong(songTitle);
+        if (indexOfSongFromAlbum< 0){
+            //findSong prints output
+        } else {
+            Song foundSong = album.getSongs().get(indexOfSongFromAlbum);
+            addInAlphabeticalOrder(foundSong);
+        }
+
     }
 
     public void addAlbumSongs(ArrayList<Album> albums, String albumTitle) {
@@ -56,9 +98,19 @@ public class Playlist {
             ArrayList<Song> currentAlbumSongs = albums.get(indexOfAlbum).getSongs();
             for(int i = 0; i < currentAlbumSongs.size(); i++) {
                 Song currentSongFromAlbum = currentAlbumSongs.get(i);
-                songs.add(currentSongFromAlbum);
+                addInAlphabeticalOrder(currentSongFromAlbum);
             }
         }
+
+    }
+
+    public void addAlbumSongs(Album album) {
+            ArrayList<Song> currentAlbumSongs = album.getSongs();
+            for(int i = 0; i < currentAlbumSongs.size(); i++) {
+                Song currentSongFromAlbum = currentAlbumSongs.get(i);
+                addInAlphabeticalOrder(currentSongFromAlbum);
+            }
+
 
     }
 
