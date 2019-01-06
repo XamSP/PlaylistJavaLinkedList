@@ -8,8 +8,61 @@ public class Album {
 
     private ArrayList<Song> songs = new ArrayList<>();
 
+    private SongList songList;
+
+    private class SongList {
+        private ArrayList<Song> songs;
+
+        public SongList() {
+            this.songs = new ArrayList<>();
+        }
+
+        public void addSong(String title, String artist, double duration) {
+            Song song = new Song(title, artist, duration);
+            songs.add(song);
+            System.out.println(song.getTitle() + " was added to the album!");
+        }
+
+        public void addSong(String title, double duration) {
+            Song song = new Song(title, duration);
+            songs.add(song);
+            System.out.println(song.getTitle() + " was added to the album!");
+        }
+
+        public void addSong(Song song) {
+            songs.add(song);
+            System.out.println(song.getTitle() + " was added to the album!");
+        }
+
+        public int findSong(String title) {
+            for (int i = 0; i < songs.size(); i++) {
+                if (songs.get(i).getTitle().equals(title)) {
+                    System.out.println(title + " found!");
+                    return i;
+                }
+            }
+            System.out.println(title + " not found!");
+            return -1;
+        }
+
+        public void printSongs() {
+            for (int i = 0; i < songs.size(); i++) {
+                System.out.println((i+1) + " - " + songs.get(i).getTitle() + ".");
+            }
+        }
+
+        public ArrayList<Song> getSongs() {
+            return songs;
+        }
+    }
+
+    public SongList getSongList() {
+        return songList;
+    }
+
     public Album(String title) {
         this.title = title;
+        this.songList = new SongList();
     }
 
     public String getTitle() {
@@ -17,22 +70,26 @@ public class Album {
     }
 
     public ArrayList<Song> getSongs() {
-        return songs;
+        return songList.getSongs();
     }
 
     public void addSong(String title, String artist, double duration) {
-        Song song = new Song(title, artist, duration);
-        songs.add(song);
-        System.out.println(song.getTitle() + " was added to the album!");
+
+         this.getSongList().addSong(title, artist, duration);
+//        Song song = new Song(title, artist, duration);
+//        songs.add(song);
+//        System.out.println(song.getTitle() + " was added to the album!");
     }
 
     public void addSong(String title, double duration) {
-        Song song = new Song(title, duration);
-        songs.add(song);
-        System.out.println(song.getTitle() + " was added to the album!");
+        this.getSongList().addSong(title, duration);
+        //        Song song = new Song(title, duration);
+//        songs.add(song);
+//        System.out.println(song.getTitle() + " was added to the album!");
     }
 
     public void addSong(Song song) {
+        this.getSongList().addSong(song);
         songs.add(song);
         System.out.println(song.getTitle() + " was added to the album!");
     }
@@ -66,13 +123,14 @@ public class Album {
     }
 
     public int findSong(String title) {
-        for (int i = 0; i < songs.size(); i++) {
-            if (songs.get(i).getTitle().equals(title)) {
-                System.out.println(title + " found in " + this.getTitle() + "!");
-                return i;
-            }
-        }
-        System.out.println(title + " not found in " + this.getTitle() + "!");
-        return -1;
+       return this.getSongList().findSong(title);
+//        for (int i = 0; i < songs.size(); i++) {
+//            if (songs.get(i).getTitle().equals(title)) {
+//                System.out.println(title + " found in " + this.getTitle() + "!");
+//                return i;
+//            }
+//        }
+//        System.out.println(title + " not found in " + this.getTitle() + "!");
+//        return -1;
     }
 }

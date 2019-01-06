@@ -125,6 +125,7 @@ public class MP3 {
         wackRap.addSong(new Song("GenericRap2", 2.2));
         wackRap.addSong(new Song("GenericRap3", 2.3));
         wackRap.addSong(new Song("GenericRap4", 2.4));
+        wackRap.getSongList();
 
         Album cRap = new Album("cRap");
         cRap.addSong(new Song("cRap1", 2.1));
